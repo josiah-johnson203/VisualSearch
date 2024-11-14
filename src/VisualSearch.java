@@ -1,9 +1,11 @@
+import javafx.application.Application;
 
-public class VisualSearch {
+public class VisualSearch 
+{
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) 
+	{
+		Application.launch(GUI.class, args);
 	}
 
 }
