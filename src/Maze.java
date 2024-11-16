@@ -389,6 +389,27 @@ public class Maze
 	}
 	
 	/*
+	 * clears the found path, if there is one
+	 */
+	public void clear()
+	{
+		if(pathFound)
+		{
+			return;
+		}
+		
+		pathFound = false;
+		
+		for(int row = 0; row < maze.length; row++)
+		{
+			for(int column = 0; column < maze[row].length; column++)
+			{
+				maze[row][column].removeFromPath();
+			}
+		}
+	}
+	
+	/*
 	 * returns a String representation of the maze
 	 */
 	public String toString()

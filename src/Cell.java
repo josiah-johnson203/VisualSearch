@@ -64,6 +64,14 @@ public class Cell
 	}
 	
 	/*
+	 * removes this cell from the path
+	 */
+	public void removeFromPath()
+	{
+		onPath = false;
+	}
+	
+	/*
 	 * returns true if this cell is located on the path out of the maze
 	 */
 	public boolean isOnPath()
