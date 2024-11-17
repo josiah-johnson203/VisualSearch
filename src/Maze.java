@@ -1,4 +1,7 @@
 import java.util.Scanner;
+
+import javafx.scene.layout.Pane;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -14,7 +17,7 @@ DESCRIPTION:
 This class represents a maze containing a 2 dimensional array of cells. This class
 contains methods to search through the maze and find the solution
 */
-public class Maze
+public class Maze extends Pane
 {
 	// first index is the row of the cell, and the second is the column is resides in
 	private Cell[][] maze;
@@ -23,46 +26,77 @@ public class Maze
 	private int rows;
 	private int columns;
 	
+	private final double WIDTH;
+	private final double HEIGHT;
+	
+	private final double START_X;
+	private final double START_Y;
+	
 	// true if a path has been found, false if not
 	private boolean pathFound;
 	
 	/*
+	 * initializes a Maze with a sent width and height for the GUI
+	 */
+	public Maze(double width, double height)
+	{
+		super();
+		
+		WIDTH = width;
+		HEIGHT = height;
+		
+		setMinSize(WIDTH, HEIGHT);
+		
+		START_X = 0.2*WIDTH;
+		START_Y = 0.2*HEIGHT;
+		
+		maze = null;
+	}
+	
+	/*
 	 * initializes a maze from the sent file name
 	 */
-	public Maze(String s) throws FileNotFoundException
+	public Maze(String s, double width, double height) throws FileNotFoundException
 	{
+		super();
+		
+		WIDTH = width;
+		HEIGHT = height;
+		
+		setMinSize(WIDTH, HEIGHT);
+
+		START_X = 0.2*WIDTH;
+		START_Y = 0.2*HEIGHT;
+		
 		pathFound = false;
 		
 		rows = 0;
 		columns = 0;
 		
-		initializeMaze(new Scanner(new File(s)));
+		loadMaze(new Scanner(new File(s)));
 	}
 	
 	/*
 	 * initializes a maze from the sent file
 	 */
-	public Maze(Scanner s)
+	public Maze(Scanner s, double width, double height)
 	{
+		super();
+		
+		WIDTH = width;
+		HEIGHT = height;
+		
+		setMinSize(WIDTH, HEIGHT);
+		
+		START_X = 0.2*WIDTH;
+		START_Y = 0.2*HEIGHT;
+		
 		pathFound = false;
 		
 		rows = 0;
 		columns = 0;
 		
-		initializeMaze(s);
-	}
-	
-	/*
-	 * returns a specified cell from the maze
-	 */
-	public Cell getCell(int row, int column)
-	{
-		if(row >= rows || column >= columns)
-		{
-			throw new IllegalArgumentException("");
-		}
-		
-		return maze[row][column];
+		loadMaze(s);
 	}
 	
 	/*
@@ -283,10 +317,15 @@ public class Maze
 		return pathFound;
 	}
 	
+	public void loadMaze(String s) throws FileNotFoundException
+	{
+		loadMaze(new Scanner(new File(s)));
+	}
+	
 	/*
-	 * private method used to initialize the maze based on text input from a file
+	 * method used to initialize the maze based on text input from a file
 	 */
-	private void initializeMaze(Scanner s)
+	public void loadMaze(Scanner s)
 	{
 		this.rows = Integer.parseInt(s.next());
 		this.columns = Integer.parseInt(s.next());
