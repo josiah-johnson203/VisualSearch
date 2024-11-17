@@ -14,7 +14,7 @@ DESCRIPTION:
 This class represents a maze containing a 2 dimensional array of cells. This class
 contains methods to search through the maze and find the solution
 */
-public class Maze 
+public class Maze
 {
 	// first index is the row of the cell, and the second is the column is resides in
 	private Cell[][] maze;
@@ -50,6 +50,19 @@ public class Maze
 		columns = 0;
 		
 		initializeMaze(s);
+	}
+	
+	/*
+	 * returns a specified cell from the maze
+	 */
+	public Cell getCell(int row, int column)
+	{
+		if(row >= rows || column >= columns)
+		{
+			throw new IllegalArgumentException("");
+		}
+		
+		return maze[row][column];
 	}
 	
 	/*
