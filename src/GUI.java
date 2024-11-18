@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GUI extends Application
@@ -24,21 +28,12 @@ public class GUI extends Application
 	/*
 	 * default empty constructor
 	 */
-	public GUI()
+	public GUI() throws FileNotFoundException
 	{
 		WIDTH = 750;
 		HEIGHT = 500;
 		
-		maze = new Maze(0.6*WIDTH, HEIGHT);
-	}
-	
-	public GUI(int width, int height)
-	{
-		WIDTH = width;
-		HEIGHT = height;
-		
-		maze = new Maze(0.6*WIDTH, HEIGHT);
-		
+		maze = new Maze("mazes.in", 0.6*WIDTH, HEIGHT);
 	}
 	
 	private void initializeGUI(Stage primary)
@@ -63,6 +58,22 @@ public class GUI extends Application
 		// -------------- BUTTON LOGIC --------------
 		btnQuit.setOnAction(event -> {
 			primary.close();
+		});
+		
+		btnImport.setOnAction(event -> {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(new File("."));
+
+			File selectedFile = fileChooser.showOpenDialog(primary);
+			
+			try 
+			{
+				maze.loadMaze(selectedFile.getAbsolutePath());
+			} 
+			catch (FileNotFoundException e) 
+			{
+				System.out.println(e.getMessage());
+			}
 		});
 		
 		root.setCenter(maze);

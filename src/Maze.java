@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,6 +32,9 @@ public class Maze extends Pane
 	
 	private final double START_X;
 	private final double START_Y;
+	
+	private static final double CELL_WIDTH = 30;
+	private static final double CELL_HEIGHT = 30;
 	
 	// true if a path has been found, false if not
 	private boolean pathFound;
@@ -438,6 +442,8 @@ public class Maze extends Pane
 				maze[row][(column-1)/2] = cell;
 			} // for
 		} // for
+		
+		updateDisplay();
 	}
 	
 	/*
@@ -467,5 +473,68 @@ public class Maze extends Pane
 	public String toString()
 	{
 		return this.asText();
+	}
+	
+	private void updateDisplay()
+	{
+		double x = 0;
+		double y = 0;
+		
+		Cell cell = null;
+		
+		for(int row = 0; row < maze.length; row++)
+		{	
+			for(int column = 0; column < maze[row].length; column++)
+			{
+				cell = maze[row][column];
+				
+				x = START_X + (column*CELL_WIDTH);
+				y = START_Y + (row*CELL_HEIGHT);
+				
+				if(!cell.getNeighbor(Cell.SOUTH) && !(cell.equals(maze[rows-1][columns-1])))
+				{
+					Line line = new Line();
+					
+					line.setStartX(x);
+					line.setEndX(x + CELL_WIDTH);
+					
+					line.setStartY(y + CELL_HEIGHT);
+					line.setEndY(y + CELL_HEIGHT);
+					
+					getChildren().add(line);
+				}
+				
+				if(!cell.getNeighbor(Cell.WEST))
+				{
+					Line line = new Line();
+					
+					line.setStartX(x);
+					line.setEndX(x);
+					
+					line.setStartY(y);
+					line.setEndY(y + CELL_HEIGHT);
+					
+					getChildren().add(line);
+				}
+			}
+		}
+		
+		Line topLine = new Line();
+		
+		topLine.setStartX(START_X + CELL_WIDTH);
+		topLine.setEndX(START_X + CELL_WIDTH*columns);
+		
+		topLine.setStartY(START_Y);
+		topLine.setEndY(START_Y);
+		
+		Line rightLine = new Line();
+		
+		rightLine.setStartX(START_X + CELL_WIDTH*columns);
+		rightLine.setEndX(START_X + CELL_WIDTH*columns);
+		
+		rightLine.setStartY(START_Y);
+		rightLine.setEndY(START_Y + CELL_HEIGHT*rows);
+		
+		getChildren().addAll(topLine, rightLine);
 	}
 } // Maze.java
