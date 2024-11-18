@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.io.File;
@@ -35,6 +37,8 @@ public class Maze extends Pane
 	
 	private static final double CELL_WIDTH = 30;
 	private static final double CELL_HEIGHT = 30;
+	
+	private static final double RADIUS = 7.5;
 	
 	// true if a path has been found, false if not
 	private boolean pathFound;
@@ -233,6 +237,20 @@ public class Maze extends Pane
 		{
 			// grabbing a location from the queue
 			currentLocation = queue.dequeue();
+			
+			
+			// placing a circle in the center of the cell
+			// this, in the GUI, symbolizes that this cell has been visited
+			Circle circle = new Circle();
+			
+			circle.setCenterX(START_X + CELL_WIDTH*(currentLocation.getColumn() + 0.5));
+			circle.setCenterY(START_Y + CELL_HEIGHT*(currentLocation.getRow() + 0.5));
+			
+			circle.setRadius(RADIUS);
+			
+			circle.setFill(Color.RED);
+			
+			getChildren().add(circle);
 			
 			// checking is this location is in the same location as the final location
 			if(currentLocation.equals(finalLocation))

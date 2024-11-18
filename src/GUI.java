@@ -56,9 +56,7 @@ public class GUI extends Application
 		
 		
 		// -------------- BUTTON LOGIC --------------
-		btnQuit.setOnAction(event -> {
-			primary.close();
-		});
+		
 		
 		btnImport.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
@@ -76,15 +74,25 @@ public class GUI extends Application
 			}
 		});
 		
+		btnFindPath.setOnAction(event -> {
+			try 
+			{
+				maze.findPath();
+			} 
+			catch (InterruptedException e) 
+			{
+				System.out.println(e.getMessage());
+			}
+		});
+		
+		btnQuit.setOnAction(event -> {
+			primary.close();
+		});
+		
 		root.setCenter(maze);
 		root.setRight(buttons);
 		
 		scene = new Scene(root, WIDTH, HEIGHT);
-		
-	}
-	
-	private void solveMaze()
-	{
 		
 	}
 	
