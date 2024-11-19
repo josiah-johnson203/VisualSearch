@@ -33,7 +33,7 @@ public class GUI extends Application
 		WIDTH = 750;
 		HEIGHT = 500;
 		
-		maze = new Maze("mazes.in", 0.6*WIDTH, HEIGHT);
+		maze = new Maze(0.6*WIDTH, HEIGHT);
 	}
 	
 	private void initializeGUI(Stage primary)
@@ -57,6 +57,9 @@ public class GUI extends Application
 		
 		// -------------- BUTTON LOGIC --------------
 		
+		btnReset.setOnAction(event -> {
+			maze.clear();
+		});
 		
 		btnImport.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
@@ -75,14 +78,7 @@ public class GUI extends Application
 		});
 		
 		btnFindPath.setOnAction(event -> {
-			try 
-			{
-				maze.findPath();
-			} 
-			catch (InterruptedException e) 
-			{
-				System.out.println(e.getMessage());
-			}
+			maze.findPath();
 		});
 		
 		btnQuit.setOnAction(event -> {

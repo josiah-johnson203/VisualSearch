@@ -1,9 +1,12 @@
 import java.util.Scanner;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -219,6 +222,10 @@ public class Maze extends Pane
 		// the queue contains cells that are waiting to be computed
 		Queue<Location> queue = new Queue<Location>();
 		
+		// this queue will be used to play the search animation at the end of the program
+		// the animation needs to be in the same order as the algorithm
+		Queue<Location> animationQueue = new Queue<Location>();
+		
 		// this Location object will contain the current Location being worked on
 		Location currentLocation = new Location(0, 0);
 		// this Location will contain possible next locations, always adjacent to the current location
@@ -238,19 +245,8 @@ public class Maze extends Pane
 			// grabbing a location from the queue
 			currentLocation = queue.dequeue();
 			
-			
-			// placing a circle in the center of the cell
-			// this, in the GUI, symbolizes that this cell has been visited
-			Circle circle = new Circle();
-			
-			circle.setCenterX(START_X + CELL_WIDTH*(currentLocation.getColumn() + 0.5));
-			circle.setCenterY(START_Y + CELL_HEIGHT*(currentLocation.getRow() + 0.5));
-			
-			circle.setRadius(RADIUS);
-			
-			circle.setFill(Color.RED);
-			
-			getChildren().add(circle);
+			// adding the location to the animation queue
+			animationQueue.enqueue(currentLocation);
 			
 			// checking is this location is in the same location as the final location
 			if(currentLocation.equals(finalLocation))
@@ -309,11 +305,27 @@ public class Maze extends Pane
 			}
 		}
 		
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
+			addCircle(animationQueue.dequeue(), Color.RED);
+		}));
+		
+		timeline.setCycleCount(animationQueue.size());
+		timeline.play();
+		
+		timeline.setOnFinished(event -> {
+			if(pathFound)
+			{
+				updateDisplay();
+			}
+		});
+		
 		// if "finalLocation"'s previous location is null, a solution was not found and the method ends here
 		if(finalLocation.previous() == null)
 		{
 			return;
 		}
+		
+		updateDisplay();
 		
 		// if a path was found, the boolean is set to true and each cell in the 
 		// path has their corresponding boolean set to true
@@ -469,7 +481,7 @@ public class Maze extends Pane
 	 */
 	public void clear()
 	{
-		if(pathFound)
+		if(!pathFound)
 		{
 			return;
 		}
@@ -483,6 +495,8 @@ public class Maze extends Pane
 				maze[row][column].removeFromPath();
 			}
 		}
+		
+		updateDisplay();
 	}
 	
 	/*
@@ -495,6 +509,8 @@ public class Maze extends Pane
 	
 	private void updateDisplay()
 	{
+		getChildren().clear();
+		
 		double x = 0;
 		double y = 0;
 		
@@ -508,6 +524,11 @@ public class Maze extends Pane
 				
 				x = START_X + (column*CELL_WIDTH);
 				y = START_Y + (row*CELL_HEIGHT);
+				
+				if(cell.isOnPath())
+				{
+					addCircle(new Location(row, column), Color.GREEN);
+				}
 				
 				if(!cell.getNeighbor(Cell.SOUTH) && !(cell.equals(maze[rows-1][columns-1])))
 				{
@@ -554,5 +575,21 @@ public class Maze extends Pane
 		rightLine.setEndY(START_Y + CELL_HEIGHT*rows);
 		
 		getChildren().addAll(topLine, rightLine);
+	}
+	
+	private void addCircle(Location loc, Color color)
+	{
+		// placing a circle in the center of the cell
+		// this, in the GUI, symbolizes that this cell has been visited
+		Circle circle = new Circle();
+		
+		circle.setCenterX(START_X + CELL_WIDTH*(loc.getColumn() + 0.5));
+		circle.setCenterY(START_Y + CELL_HEIGHT*(loc.getRow() + 0.5));
+		
+		circle.setRadius(RADIUS);
+		
+		circle.setFill(color);
+		
+		getChildren().add(circle);
 	}
 } // Maze.java
