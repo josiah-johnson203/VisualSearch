@@ -1,11 +1,4 @@
 /*
-NAME: 	Josiah Johnson
-PROJECT: Project 2
-COURSE: CS 26000
-INSTRUCTOR: Beomjin Kim
-LAB TIME: TR 3:00PM
-DUE DATE: 10/24/24
-
 DESCRIPTION:
 This class is a generic LinkedList
 */

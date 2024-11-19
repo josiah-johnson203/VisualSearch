@@ -1,11 +1,4 @@
 /*
-NAME: 	Josiah Johnson
-PROJECT: Project 3
-COURSE: CS 26000
-INSTRUCTOR: Beomjin Kim
-LAB TIME: TR 3:00PM
-DUE DATE: 11/14/24
-
 DESCRIPTION:
 This class represents a location within the maze, including coordinates for its position and a link
 to the previous location

@@ -12,13 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /*
-NAME: 	Josiah Johnson
-PROJECT: Project 3
-COURSE: CS 26000
-INSTRUCTOR: Beomjin Kim
-LAB TIME: TR 3:00PM
-DUE DATE: 11/14/24
-
 DESCRIPTION:
 This class represents a maze containing a 2 dimensional array of cells. This class
 contains methods to search through the maze and find the solution
