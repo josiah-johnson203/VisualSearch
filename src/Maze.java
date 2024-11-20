@@ -298,13 +298,16 @@ public class Maze extends Pane
 			}
 		}
 		
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
+		// creating a timeline to play an animation of the maze being solved
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
 			addCircle(animationQueue.dequeue(), Color.RED);
 		}));
 		
+		// running the animation for each location in the animation queue
 		timeline.setCycleCount(animationQueue.size());
 		timeline.play();
 		
+		// updating the display once the animation is finished
 		timeline.setOnFinished(event -> {
 			if(pathFound)
 			{
@@ -317,8 +320,6 @@ public class Maze extends Pane
 		{
 			return;
 		}
-		
-		updateDisplay();
 		
 		// if a path was found, the boolean is set to true and each cell in the 
 		// path has their corresponding boolean set to true
@@ -474,6 +475,8 @@ public class Maze extends Pane
 	 */
 	public void clear()
 	{
+		// if a path has not been found, the cleared display will look the same
+		// therefore, there is no reason to redraw its
 		if(!pathFound)
 		{
 			return;
@@ -489,6 +492,7 @@ public class Maze extends Pane
 			}
 		}
 		
+		// updating the display
 		updateDisplay();
 	}
 	
@@ -500,8 +504,12 @@ public class Maze extends Pane
 		return this.asText();
 	}
 	
+	/*
+	 * clears the maze and redraws it
+	 */
 	private void updateDisplay()
-	{
+	{	
+		// clearing the current visualization of the maze
 		getChildren().clear();
 		
 		double x = 0;
@@ -509,15 +517,23 @@ public class Maze extends Pane
 		
 		Cell cell = null;
 		
+		
+		// for loops to run for each cell in the maze
 		for(int row = 0; row < maze.length; row++)
 		{	
 			for(int column = 0; column < maze[row].length; column++)
 			{
+				// for each cell in the maze, I only need to check and draw the left (west) and down (south) directions
+				
+				// drawing all 4 directions for each cell would cause lines to be drawn on top of each other, which visually would
+				// look the same but creates unnecessary processing
 				cell = maze[row][column];
 				
 				x = START_X + (column*CELL_WIDTH);
 				y = START_Y + (row*CELL_HEIGHT);
 				
+				// adding a green circle to the cell if its on the path
+				// if the maze is solved, this will show the user the path out of the maze
 				if(cell.isOnPath())
 				{
 					addCircle(new Location(row, column), Color.GREEN);
@@ -570,6 +586,9 @@ public class Maze extends Pane
 		getChildren().addAll(topLine, rightLine);
 	}
 	
+	/*
+	 * adds a circle to the center of the location with the given color
+	 */
 	private void addCircle(Location loc, Color color)
 	{
 		// placing a circle in the center of the cell

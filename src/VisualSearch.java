@@ -10,5 +10,4 @@ public class VisualSearch
 	{
 		Application.launch(GUI.class, args);
 	}
-
 }
